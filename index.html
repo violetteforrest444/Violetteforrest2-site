@@ -539,5 +539,13 @@
   <p>Violette &middot; est. present incarnation</p>
 </footer>
 
+<script>
+  // Always open at the top of the page (with the Book a Reading button), even after a refresh or a menu click.
+  try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(e){}
+  window.addEventListener('load',function(){
+    if(location.hash){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+    window.scrollTo(0,0);
+  });
+</script>
 </body>
 </html>
