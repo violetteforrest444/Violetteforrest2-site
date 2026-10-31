@@ -544,7 +544,7 @@
   try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(e){}
   window.addEventListener('load',function(){
     if(location.hash){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
-    window.scrollTo(0,0);
+    setTimeout(function(){ window.scrollTo({top:0,left:0,behavior:'instant'}); },0);
   });
 </script>
 </body>
