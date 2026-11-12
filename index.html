@@ -119,7 +119,38 @@
         var(--void);
     }
   }
-  header.hero h1, header.hero .tagline{
+  /* Violet light woven into the forest: a color wash that tints the shadows
+     violet, plus a low violet mist and a soft glow behind the title */
+  .hero::before, .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+  }
+  .hero::before{
+    background:
+      radial-gradient(ellipse 75% 70% at 50% 55%, rgba(150,100,220,0) 35%, rgba(130,80,210,0.42) 100%);
+    mix-blend-mode: color;
+    -webkit-mask-image: linear-gradient(to bottom, #000 75%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 75%, transparent 100%);
+  }
+  .hero::after{
+    background:
+      radial-gradient(ellipse 30% 26% at 50% 48%, rgba(170,120,235,0.22), transparent 70%),
+      radial-gradient(ellipse 45% 14% at 28% 78%, rgba(175,125,240,0.28), transparent 70%),
+      radial-gradient(ellipse 40% 12% at 76% 82%, rgba(160,110,235,0.26), transparent 70%);
+    mix-blend-mode: screen;
+    animation: violetBreath 9s ease-in-out infinite;
+  }
+  @keyframes violetBreath{
+    0%,100%{ opacity: 0.75; }
+    50%{ opacity: 1; }
+  }
+  header.hero h1{
+    text-shadow: 0 2px 18px rgba(20,8,40,0.9), 0 0 36px rgba(170,120,235,0.55);
+  }
+  header.hero .tagline{
     text-shadow: 0 2px 18px rgba(20,8,40,0.9), 0 0 40px rgba(195,160,90,0.2);
   }
   header.hero .tagline{ color: var(--parchment); }
