@@ -92,6 +92,39 @@
     border-color: var(--gold);
   }
 
+  .nav-toggle{ display:none; }
+  @media (max-width: 700px){
+    .nav-toggle{
+      display:flex; flex-direction:column; justify-content:center; gap:6px;
+      width:44px; height:44px; padding:10px;
+      background:transparent; border:0; cursor:pointer;
+      position:relative; z-index:102;
+    }
+    .nav-toggle span{
+      display:block; height:1.5px; width:100%;
+      background: var(--gold);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    nav.open .nav-toggle span:nth-child(1){ transform: translateY(7.5px) rotate(45deg); }
+    nav.open .nav-toggle span:nth-child(2){ opacity:0; }
+    nav.open .nav-toggle span:nth-child(3){ transform: translateY(-7.5px) rotate(-45deg); }
+    .nav-links{
+      position:absolute; top:100%; right: clamp(1.5rem, 5vw, 4rem);
+      flex-direction:column; gap:0;
+      min-width: 13rem;
+      padding: 0.6rem 0;
+      background: rgba(36,18,72,0.97);
+      border: 1px solid rgba(195,160,90,0.35);
+      box-shadow: 0 16px 40px rgba(10,4,25,0.6);
+      opacity:0; visibility:hidden; transform: translateY(-8px);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+      font-size: 0.78rem;
+    }
+    nav.open .nav-links{ opacity:1; visibility:visible; transform:none; }
+    .nav-links a{ display:block; padding: 0.95rem 1.6rem; border-bottom:0; }
+    .nav-links li + li{ border-top: 1px solid rgba(195,160,90,0.15); }
+  }
+
   /* ---------- HERO ---------- */
   .hero{
     position: relative;
@@ -480,7 +513,10 @@
 
 <nav>
   <span class="nav-mark">V&nbsp;&bull;&nbsp;I&nbsp;&bull;&nbsp;O&nbsp;&bull;&nbsp;L&nbsp;&bull;&nbsp;E&nbsp;&bull;&nbsp;T&nbsp;&bull;&nbsp;T&nbsp;&bull;&nbsp;E</span>
-  <ul class="nav-links">
+  <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#readings">Readings</a></li>
     <li><a href="#spread">The Spread</a></li>
@@ -623,6 +659,22 @@
     if(location.hash){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
     setTimeout(function(){ window.scrollTo({top:0,left:0,behavior:'instant'}); },0);
   });
+</script>
+<script>
+  (function(){
+    var nav = document.querySelector('nav');
+    var btn = nav && nav.querySelector('.nav-toggle');
+    if(!btn) return;
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    btn.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    nav.querySelectorAll('.nav-links a').forEach(function(a){ a.addEventListener('click', function(){ setOpen(false); }); });
+    document.addEventListener('click', function(e){ if(!nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setOpen(false); });
+  })();
 </script>
 </body>
 </html>
